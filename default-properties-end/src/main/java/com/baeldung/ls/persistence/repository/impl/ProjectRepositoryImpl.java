@@ -4,13 +4,22 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
 import com.baeldung.ls.persistence.model.Project;
 import com.baeldung.ls.persistence.repository.IProjectRepository;
 
+@Slf4j
 @Repository
 public class ProjectRepositoryImpl implements IProjectRepository {
+
+    @Value("${name.first-name}")
+    private String firstName;
+
+    @Value("${name.surname}")
+    private String surname;
 
     private List<Project> projects = new ArrayList<>();
 
@@ -23,6 +32,9 @@ public class ProjectRepositoryImpl implements IProjectRepository {
 
     @Override
     public Project save(Project project) {
+        log.info("your surname is {}", surname);
+        log.info("your first-name is {}", firstName);
+
         Project existingProject = findById(project.getId()).orElse(null);
         if (existingProject == null) {
             projects.add(project);
